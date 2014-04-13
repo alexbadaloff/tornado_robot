@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body { margin: 0px; padding: 0px; }
+      canvas { border: 1px solid #9C9898; }
+    </style>
+    <script>
+
+      var socket = new WebSocket("ws://10.17.0.46/ws");
+      socket.onopen = function(){  
+        console.log("connected"); 
+      }; 
+
+      socket.onmessage = function (message) {
+        console.log("receiving: " + message.data)
+        document.getElementById("text").innerHTML = message.data;
+      };
+ 
+      socket.onclose = function(){
+        console.log("disconnected"); 
+      };
+ 
+      sendMessage = function(message) {
+        socket.send(message);
+      };
+      
+      window.onload = function() { 
+ 
+        document.getElementById('left').addEventListener('click', function(k) {
+             sendMessage("1");
+        }, false);
+
+        document.getElementById('right').addEventListener('click', function(k) {
+            sendMessage("2");
+        }, false);
+        document.getElementById('up').addEventListener('click', function(k) {
+            sendMessage("3");
+        }, false);
+        document.getElementById('down').addEventListener('click', function(k) {
+            sendMessage("4");
+        }, false);
+        document.getElementById('stop').addEventListener('click', function(k) {
+            sendMessage("5");
+        }, false);
+    };
+ 
+    </script>
+
+  </head>
+  <body>
+    <center>
+      <div style="text-align: center;">
+        <H2>Управление роботом</H2>
+        <table align="center">
+        <tr>
+          <td></td>
+          <td><button id="up">&Delta;<br>Вперёд</button></td> 
+          <td></td>
+        </tr>
+        <tr>
+          <td><button id="left">&lArr; Влево</button></td>
+          <td><button id="stop">&empty;<br>&nbsp;Стоп <br>&empty;</button></td> 
+          <td><button id="right">Вправо &rArr;</button></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button id="down">Назад<br>&nabla;</button></td> 
+          <td></td>
+        </tr>
+        </table>
+      </div>
+      <H2><div id="text"></text></div></H2>
+    </center>
+
+  </body>
+</html>
